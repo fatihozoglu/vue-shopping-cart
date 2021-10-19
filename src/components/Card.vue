@@ -7,8 +7,8 @@
       :src="shoesData.photo"
       :alt="shoesData.category"
     ></b-card-img>
-    <h3>{{ shoesData.title }}</h3>
-    <p class="m-0">Category: {{ shoesData.category }}</p>
+    <h5 class="m-0">{{ shoesData.title }}</h5>
+    <p class="m-0 mb-2">Category: {{ shoesData.category }}</p>
     <!-- Card image, title and category section ends here -->
 
     <!-- Card Rating Starts Here -->
@@ -36,7 +36,7 @@
           v-model="selected"
           type="radio"
           :id="shoesData.id + '-' + item"
-          name="sizes"
+          :name="shoesData.id + 'sizes'"
           :value="item"
         />
         <label
@@ -51,7 +51,7 @@
     <!-- Price, Number of selected items, Add to Card Button Section Starts Here-->
     <div>
       <div class="d-flex align-items-center justify-content-between">
-        <p class="m-0 h4">Price: ${{ computedPrice }}</p>
+        <p class="m-0 h5">Price: ${{ computedPrice }}</p>
         <select
           class="item-number"
           v-model="itemNumber"
@@ -88,8 +88,9 @@ export default {
         id: this.shoesData.id,
         photo: this.shoesData.photo,
         title: this.shoesData.title,
-        number: Number(this.itemNumber),
-        total: Number(this.computedPrice * this.itemNumber),
+        number: this.itemNumber,
+        size: this.selected === 0 ? 36 : this.selected,
+        itemPrice: this.computedPrice
       });
     },
   },

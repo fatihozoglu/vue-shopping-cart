@@ -17,10 +17,14 @@
         </b-navbar-nav>
       </b-collapse>
 
-      <b-navbar-nav @click="cartToggle" class="cart-icon d-flex flex-row align-items-center justify-content-center ml-auto h2 me-5">
-        <b-icon variant="light" icon="cart4">
-        </b-icon>
-        <div class="d-flex align-items-center align-self-start justify-content-center">
+      <b-navbar-nav
+        @click="cartToggle"
+        class="cart-icon d-flex flex-row align-items-center justify-content-center ml-auto h2"
+      >
+        <b-icon variant="light" icon="cart4"> </b-icon>
+        <div
+          class="d-flex align-items-center align-self-start justify-content-center"
+        >
           {{ cartData.length === 0 ? "0" : showTotalItemNumber }}
         </div>
       </b-navbar-nav>
@@ -38,17 +42,19 @@
         />
       </b-row>
     </main>
-
-    <div class="cart-container" v-show="isCartOpen">
-      <CartItem v-for="(item, index) of cartData" :key="index" :data="item" />
-    </div>
+    <Cart
+      @deleteItem="deleteItem"
+      class="cart"
+      v-show="isCartOpen"
+      :data="cartData"
+    />
     <!-- Main Ends Here -->
   </div>
 </template>
 
 <script>
 import Card from "./components/Card.vue";
-import CartItem from "./components/CartItem.vue";
+import Cart from "./components/Cart.vue";
 import data from "./data";
 
 export default {
@@ -64,18 +70,32 @@ export default {
   methods: {
     cartToggle: function() {
       if (this.cartData.length === 0) {
-        return;
+        this.isCartOpen = false;
       } else {
         this.isCartOpen = !this.isCartOpen;
       }
     },
     addItemToCart: function(value) {
-      if (this.cartData.some((item) => item.id === value.id)) {
-        let sameItem = this.cartData.filter((item) => item.id === value.id)[0];
+      if (
+        this.cartData.some(
+          (item) => item.id === value.id && item.size === value.size
+        )
+      ) {
+        let sameItem = this.cartData.filter(
+          (item) => item.id === value.id && item.size === value.size
+        )[0];
         sameItem.number += value.number;
-        sameItem.total += value.total;
       } else {
         this.cartData.push(value);
+      }
+    },
+    deleteItem: function(value) {
+      let ind = this.cartData.findIndex(
+        (item) => item.id === value.id && item.size === value.size
+      );
+      this.cartData.splice(ind, 1);
+      if (this.cartData.length === 0) {
+        this.isCartOpen = false;
       }
     },
   },
@@ -89,7 +109,7 @@ export default {
 
   components: {
     Card,
-    CartItem,
+    Cart,
   },
 };
 </script>
@@ -100,7 +120,7 @@ export default {
 }
 
 .cart-icon {
-  min-width: 100px;
+  min-width: 80px;
   height: 50px;
   cursor: pointer;
 }
@@ -123,15 +143,29 @@ main {
   min-height: 10vh;
 }
 
-.cart-container {
+.cart {
   position: fixed;
-  top: 11vh;
-  right: 100px;
-  width: 300px;
+  top: 10vh;
+  right: 50px;
+  width: 400px;
   max-height: 89vh;
   padding: 10px;
   overflow: scroll;
   background-color: grey;
   color: white;
+}
+
+@media only screen and (max-width: 500px) {
+  .cart {
+    right: 0;
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  .cart {
+    right: 0px;
+    width: 100%;
+  }
 }
 </style>
