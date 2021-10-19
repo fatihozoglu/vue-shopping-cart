@@ -1,9 +1,12 @@
 <template>
   <div id="app">
-    <b-navbar class="px-5" toggleable="lg" type="dark" variant="dark">
+    <!-- Navbar Starts Here -->
+    <b-navbar
+      class="nav fixed-top px-5 d-flex justify-content-between"
+      toggleable="lg"
+      type="dark"
+    >
       <b-navbar-brand href="#">My Vue Shoes</b-navbar-brand>
-
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ms-3">
@@ -12,79 +15,81 @@
           <b-nav-item href="#">About Us</b-nav-item>
           <b-nav-item href="#">Contact</b-nav-item>
         </b-navbar-nav>
-
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ms-auto"> </b-navbar-nav>
       </b-collapse>
+
+      <b-navbar-nav @click="cartToggle" class="cart-icon d-flex flex-row align-items-center justify-content-center ml-auto h2 me-5">
+        <b-icon variant="light" icon="cart4">
+        </b-icon>
+        <div class="d-flex align-items-center align-self-start justify-content-center">
+          {{ cartData.length === 0 ? "0" : showTotalItemNumber }}
+        </div>
+      </b-navbar-nav>
     </b-navbar>
-    <main class="p-5">
-      <b-row class="mx-auto d-flex justify-content-center gap-5">
+    <!-- Navbar Ends Here -->
+
+    <!-- Main Starts Here -->
+    <main>
+      <b-row class="d-flex justify-content-center gap-4">
         <Card
+          @onAddItem="addItemToCart"
           v-for="item in shoesInfo"
-          :data="item"
+          :shoesData="item"
           :key="item.id"
         />
       </b-row>
     </main>
+
+    <div class="cart-container" v-show="isCartOpen">
+      <CartItem v-for="(item, index) of cartData" :key="index" :data="item" />
+    </div>
+    <!-- Main Ends Here -->
   </div>
 </template>
 
 <script>
 import Card from "./components/Card.vue";
-import blue from "./assets/nike-blue.jpg";
-import pink from "./assets/nike-pink.jpg";
+import CartItem from "./components/CartItem.vue";
+import data from "./data";
 
 export default {
   name: "App",
   data() {
     return {
-      shoesInfo: [
-        {
-          id: 1,
-          photo: blue,
-          category: "Men Sports Shoe",
-          title: "Nike Epic React Flyknit Sky Blue",
-          summary: "Best for running and having fun in the nature",
-          sizes: [36, 37, 38, 39, 40, 41, 42],
-          price: 100,
-          star: 4,
-        },
-        {
-          id: 2,
-          photo: pink,
-          category: "Women Sports Shoe",
-          title: "Nike Epic React Flyknit Sky Pink",
-          summary: "Best for running and having fun in the nature",
-          sizes: [36, 37, 38, 39, 40, 41, 42],
-          price: 100,
-          star: 3,
-        },
-        {
-          id: 3,
-          photo: blue,
-          category: "Men Sports Shoe",
-          title: "Nike Epic React Flyknit Sky Blue",
-          summary: "Best for running and having fun in the nature",
-          sizes: [36, 37, 38, 39, 40, 41, 42],
-          price: 100,
-          star: 2,
-        },
-        {
-          id: 4,
-          photo: pink,
-          category: "Women Sports Shoe",
-          title: "Nike Epic React Flyknit Sky Pink",
-          summary: "Best for running and having fun in the nature",
-          sizes: [36, 37, 38, 39, 40, 41, 42],
-          price: 100,
-          star: 5,
-        },
-      ],
+      isCartOpen: false,
+      shoesInfo: data,
+      cartData: [],
     };
+  },
+
+  methods: {
+    cartToggle: function() {
+      if (this.cartData.length === 0) {
+        return;
+      } else {
+        this.isCartOpen = !this.isCartOpen;
+      }
+    },
+    addItemToCart: function(value) {
+      if (this.cartData.some((item) => item.id === value.id)) {
+        let sameItem = this.cartData.filter((item) => item.id === value.id)[0];
+        sameItem.number += value.number;
+        sameItem.total += value.total;
+      } else {
+        this.cartData.push(value);
+      }
+    },
+  },
+  computed: {
+    showTotalItemNumber: function() {
+      return this.cartData.reduce((acc, curr) => {
+        return acc + curr.number;
+      }, 0);
+    },
   },
 
   components: {
     Card,
+    CartItem,
   },
 };
 </script>
@@ -92,5 +97,41 @@ export default {
 <style>
 #app {
   min-height: 100vh;
+}
+
+.cart-icon {
+  min-width: 100px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.cart-icon > div {
+  min-width: 25px;
+  height: 25px;
+  background-color: rgb(47, 10, 82);
+  color: white;
+  font-size: 14px;
+  border-radius: 50%;
+}
+
+main {
+  padding: 120px 50px;
+}
+
+.nav {
+  background-color: rgb(60, 49, 78);
+  min-height: 10vh;
+}
+
+.cart-container {
+  position: fixed;
+  top: 11vh;
+  right: 100px;
+  width: 300px;
+  max-height: 89vh;
+  padding: 10px;
+  overflow: scroll;
+  background-color: grey;
+  color: white;
 }
 </style>
