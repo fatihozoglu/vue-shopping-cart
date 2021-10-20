@@ -43,22 +43,26 @@
       </b-row>
     </main>
     <!-- Main Ends Here -->
+
     <Cart
       @deleteItem="deleteItem"
-      class="cart"
+      class="cart-component"
       v-show="isCartOpen"
       :data="cartData"
-    ></Cart>
+    />
 
-    <Alert :num="addedItemNumber" v-show="willAlertFire" class="alert-component"/>
-
+    <Alert
+      :num="addedItemNumber"
+      v-show="willAlertFire"
+      class="alert-component"
+    />
   </div>
 </template>
 
 <script>
 import Card from "./components/Card.vue";
 import Cart from "./components/Cart.vue";
-import Alert from "./components/Alert.vue"
+import Alert from "./components/Alert.vue";
 import data from "./data";
 
 export default {
@@ -74,6 +78,7 @@ export default {
   },
 
   methods: {
+    // Prevent if there is no item in Cart and let it show if there are items
     cartToggle: function() {
       if (this.cartData.length === 0) {
         this.isCartOpen = false;
@@ -81,6 +86,7 @@ export default {
         this.isCartOpen = !this.isCartOpen;
       }
     },
+    // Checking the id and size of an item in Cart and if item doesnt exist it adds the item, if it exist it adds the number
     addItemToCart: function(value) {
       this.addedItemNumber = value.number;
       if (
@@ -96,8 +102,9 @@ export default {
         this.cartData.push(value);
       }
       this.willAlertFire = true;
-      setTimeout(() => this.willAlertFire = false, 3000);
+      setTimeout(() => (this.willAlertFire = false), 3000);
     },
+    // Deletes the item based on the id and size
     deleteItem: function(value) {
       let ind = this.cartData.findIndex(
         (item) => item.id === value.id && item.size === value.size
@@ -109,6 +116,7 @@ export default {
     },
   },
   computed: {
+    // Computes the price based on the shoe size
     showTotalItemNumber: function() {
       return this.cartData.reduce((acc, curr) => {
         return acc + curr.number;
@@ -125,8 +133,14 @@ export default {
 </script>
 
 <style>
+
 #app {
   min-height: 100vh;
+}
+
+.nav {
+  background-color: rgb(60, 49, 78);
+  min-height: 10vh;
 }
 
 .cart-icon {
@@ -148,12 +162,7 @@ main {
   padding: 120px 50px;
 }
 
-.nav {
-  background-color: rgb(60, 49, 78);
-  min-height: 10vh;
-}
-
-.cart {
+.cart-component {
   position: fixed;
   top: 10vh;
   right: 50px;
@@ -165,7 +174,7 @@ main {
   color: white;
 }
 
-.alert-component{
+.alert-component {
   position: fixed;
   bottom: 20px;
   right: 20px;
