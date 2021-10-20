@@ -42,19 +42,23 @@
         />
       </b-row>
     </main>
+    <!-- Main Ends Here -->
     <Cart
       @deleteItem="deleteItem"
       class="cart"
       v-show="isCartOpen"
       :data="cartData"
-    />
-    <!-- Main Ends Here -->
+    ></Cart>
+
+    <Alert :num="addedItemNumber" v-show="willAlertFire" class="alert-component"/>
+
   </div>
 </template>
 
 <script>
 import Card from "./components/Card.vue";
 import Cart from "./components/Cart.vue";
+import Alert from "./components/Alert.vue"
 import data from "./data";
 
 export default {
@@ -64,6 +68,8 @@ export default {
       isCartOpen: false,
       shoesInfo: data,
       cartData: [],
+      addedItemNumber: null,
+      willAlertFire: false,
     };
   },
 
@@ -76,6 +82,7 @@ export default {
       }
     },
     addItemToCart: function(value) {
+      this.addedItemNumber = value.number;
       if (
         this.cartData.some(
           (item) => item.id === value.id && item.size === value.size
@@ -88,6 +95,8 @@ export default {
       } else {
         this.cartData.push(value);
       }
+      this.willAlertFire = true;
+      setTimeout(() => this.willAlertFire = false, 3000);
     },
     deleteItem: function(value) {
       let ind = this.cartData.findIndex(
@@ -110,6 +119,7 @@ export default {
   components: {
     Card,
     Cart,
+    Alert,
   },
 };
 </script>
@@ -153,6 +163,12 @@ main {
   overflow: scroll;
   background-color: grey;
   color: white;
+}
+
+.alert-component{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
 
 @media only screen and (max-width: 500px) {
