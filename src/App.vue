@@ -50,12 +50,13 @@
       v-show="isCartOpen"
       :data="cartData"
     />
-
-    <Alert
-      :num="addedItemNumber"
-      v-show="willAlertFire"
-      class="alert-component"
-    />
+    <transition name="fade">
+      <Alert
+        :num="addedItemNumber"
+        v-show="willAlertFire"
+        class="alert-component"
+      />
+    </transition>
   </div>
 </template>
 
@@ -102,7 +103,7 @@ export default {
         this.cartData.push(value);
       }
       this.willAlertFire = true;
-      setTimeout(() => (this.willAlertFire = false), 3000);
+      setTimeout(() => (this.willAlertFire = false), 2000);
     },
     // Deletes the item based on the id and size
     deleteItem: function(value) {
@@ -178,6 +179,13 @@ main {
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
 @media only screen and (max-width: 500px) {
