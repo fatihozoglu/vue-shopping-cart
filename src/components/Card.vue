@@ -26,7 +26,11 @@
           class="d-flex align-items-center justify-content-center"
           :for="shoesData.id + '-photo-' + index"
         >
-          <img :style="{ border: '2px solid ' + setColor }" :src="item.photo" alt="Shoe Photo" />
+          <img
+            :style="{ border: '2px solid ' + setColor }"
+            :src="item.photo"
+            alt="Shoe Photo"
+          />
         </label>
       </div>
     </div>
@@ -50,6 +54,8 @@
       {{ shoesData.summary }}
     </b-card-text>
 
+    <p class="h4 m-0 mb-3">Price: ${{ computedPrice }}</p>
+
     <!-- Size Selecting Part Starts Here -->
     <p class="m-0">Available Sizes:</p>
     <div class="d-flex align-items-center justify-content-between mb-4">
@@ -63,7 +69,7 @@
           :value="item"
         />
         <label
-          :style="{ backgroundColor: setColor}"
+          :style="{ border: '2px solid ' + setColor }"
           class="d-flex align-items-center justify-content-center rounded"
           :for="shoesData.id + '-' + item"
           >{{ item }}</label
@@ -73,24 +79,26 @@
     <!-- Size Selecting Part Ends Here -->
 
     <!-- Price, Number of selected items, Add to Card Button Section Starts Here-->
-    <div>
-      <div class="d-flex align-items-center justify-content-start gap-3">
-        <p :style="{ color: setColor }" class="h4 m-0">Price: ${{ computedPrice }}</p>
-        <select
-          :style="{ backgroundColor: setColor }"
-          class="item-number border-0 rounded"
-          v-model="itemNumber"
-          name="item-number"
-          id="item-number"
-        >
-          <option v-for="(i, index) in 10" :value="i" :key="index">{{
-            i
-          }}</option>
-        </select>
-        <b-button @click="onAddItem" class="border-0 rounded" :style="{ backgroundColor: setColor }"
-          >Add to Cart</b-button
-        >
-      </div>
+
+    <div class="d-flex align-items-center justify-content-between gap-3">
+      <select
+        :style="{ border: '2px solid ' + setColor }"
+        class="item-number rounded"
+        v-model="itemNumber"
+        name="item-number"
+        id="item-number"
+      >
+        <option v-for="(i, index) in 10" :value="i" :key="index">{{
+          i
+        }}</option>
+      </select>
+      <b-button
+        @click="onAddItem"
+        :style="{ border: '2px solid ' + setColor }"
+        class="rounded outline-none w-75"
+        variant="light"
+        >Add to Cart</b-button
+      >
     </div>
     <!-- Price, Number of selected items, Add to Card Button Section Ends Here-->
   </b-card>
@@ -164,7 +172,7 @@ export default {
           color = "#4c5051";
           break;
         case "Purple":
-          color= "#512a5e";
+          color = "#512a5e";
           break;
         case "Brown":
           color = "#ac600e";
@@ -176,6 +184,7 @@ export default {
 </script>
 
 <style scoped>
+
 .small-photos-container {
   width: 100%;
   height: 80px;
@@ -204,11 +213,15 @@ export default {
 .size {
   width: 40px;
   height: 40px;
-  color: white;
 }
 
 .size-input {
   display: none;
+  color: black;
+}
+
+.size-input:checked + label {
+  background-color: var()
 }
 
 .size > label {
@@ -218,10 +231,9 @@ export default {
 }
 
 .item-number {
-  height: 35px;
+  height: 38px;
   padding-left: 10px;
   cursor: pointer;
-  color: white;
 }
 
 .checked {
