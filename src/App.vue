@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+
     <!-- Navbar Starts Here -->
     <b-navbar
       class="nav fixed-top px-5 d-flex justify-content-between"
@@ -50,6 +51,7 @@
       v-show="isCartOpen"
       :data="cartData"
     />
+
     <transition name="fade">
       <Alert
         :num="addedItemNumber"
@@ -87,16 +89,16 @@ export default {
         this.isCartOpen = !this.isCartOpen;
       }
     },
-    // Checking the id and size of an item in Cart and if item doesnt exist it adds the item, if it exist it adds the number
+    // Checking the id, size and color of the items in Cart and if item doesnt exist it is added, if exists it's number increase
     addItemToCart: function(value) {
       this.addedItemNumber = value.number;
       if (
         this.cartData.some(
-          (item) => item.id === value.id && item.size === value.size
+          (item) => item.id === value.id && item.size === value.size && item.color === value.color
         )
       ) {
         let sameItem = this.cartData.filter(
-          (item) => item.id === value.id && item.size === value.size
+          (item) => item.id === value.id && item.size === value.size && item.color === value.color
         )[0];
         sameItem.number += value.number;
       } else {
@@ -105,10 +107,10 @@ export default {
       this.willAlertFire = true;
       setTimeout(() => (this.willAlertFire = false), 2000);
     },
-    // Deletes the item based on the id and size
+    // Deletes the item 
     deleteItem: function(value) {
       let ind = this.cartData.findIndex(
-        (item) => item.id === value.id && item.size === value.size
+        (item) => item.id === value.id && item.size === value.size && item.color === value.color
       );
       this.cartData.splice(ind, 1);
       if (this.cartData.length === 0) {
@@ -161,6 +163,7 @@ export default {
 
 main {
   padding: 120px 50px;
+  background-color: rgb(221, 221, 221);
 }
 
 .cart-component {

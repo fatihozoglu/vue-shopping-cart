@@ -21,7 +21,7 @@ export default {
   justify-content: center;
   width: 200px;
   height: 50px;
-  background-color: grey;
+  background-color: rgb(105, 105, 105);
   color: white;
   border-radius: 5px;
 }

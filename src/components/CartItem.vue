@@ -3,7 +3,7 @@
     <img class="cart-img me-2" :src="data.photo" />
     <div class="cart-desc">
       <p class="m-0">{{ data.title }}</p>
-      <p class="m-0">Size: {{ data.size }}</p>
+      <p class="m-0">Size: {{ data.size }} <span class="ms-2">Color: {{data.color}}</span> </p>
       <p class="m-0 mb-1">Total: ${{ data.number * data.itemPrice }}</p>
       <div
         class="cart-action d-flex align-items-center justify-content-between"

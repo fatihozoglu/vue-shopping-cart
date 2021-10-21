@@ -4,9 +4,32 @@
     <!-- Card image, title and category section starts here -->
     <b-card-img
       class="mb-3"
-      :src="shoesData.photo"
+      :src="selectedPhoto.photo"
       :alt="shoesData.category"
     ></b-card-img>
+    <div
+      class="small-photos-container d-flex align-items-center justify-content-start gap-2"
+    >
+      <div
+        class="small-photo"
+        v-for="(item, index) in shoesData.photos"
+        :key="index"
+      >
+        <input
+          v-model="selectedPhoto"
+          type="radio"
+          :id="shoesData.id + '-photo-' + index"
+          :name="shoesData.id + 'photos'"
+          :value="item"
+        />
+        <label
+          class="d-flex align-items-center justify-content-center"
+          :for="shoesData.id + '-photo-' + index"
+        >
+          <img :style="{ border: '2px solid ' + setColor }" :src="item.photo" alt="Shoe Photo" />
+        </label>
+      </div>
+    </div>
     <h5 class="m-0">{{ shoesData.title }}</h5>
     <p class="m-0 mb-2">Category: {{ shoesData.category }}</p>
     <!-- Card image, title and category section ends here -->
@@ -40,7 +63,8 @@
           :value="item"
         />
         <label
-          class="d-flex align-items-center justify-content-center"
+          :style="{ backgroundColor: setColor}"
+          class="d-flex align-items-center justify-content-center rounded"
           :for="shoesData.id + '-' + item"
           >{{ item }}</label
         >
@@ -50,10 +74,11 @@
 
     <!-- Price, Number of selected items, Add to Card Button Section Starts Here-->
     <div>
-      <div class="d-flex align-items-center justify-content-between">
-        <p class="m-0 h5">Price: ${{ computedPrice }}</p>
+      <div class="d-flex align-items-center justify-content-start gap-3">
+        <p :style="{ color: setColor }" class="h4 m-0">Price: ${{ computedPrice }}</p>
         <select
-          class="item-number"
+          :style="{ backgroundColor: setColor }"
+          class="item-number border-0 rounded"
           v-model="itemNumber"
           name="item-number"
           id="item-number"
@@ -62,7 +87,9 @@
             i
           }}</option>
         </select>
-        <b-button @click="onAddItem" variant="secondary">Add to Cart</b-button>
+        <b-button @click="onAddItem" class="border-0 rounded" :style="{ backgroundColor: setColor }"
+          >Add to Cart</b-button
+        >
       </div>
     </div>
     <!-- Price, Number of selected items, Add to Card Button Section Ends Here-->
@@ -79,24 +106,29 @@ export default {
   data() {
     return {
       selected: 0,
+      selectedPhoto: {
+        color: this.shoesData.photos[0].color,
+        photo: this.shoesData.photos[0].photo,
+      },
       itemNumber: 1,
     };
   },
   methods: {
-    onAddItem: function() {
+    onAddItem() {
       this.$emit("onAddItem", {
         id: this.shoesData.id,
-        photo: this.shoesData.photo,
+        photo: this.selectedPhoto.photo,
+        color: this.selectedPhoto.color,
         title: this.shoesData.title,
         number: this.itemNumber,
         size: this.selected === 0 ? 36 : this.selected,
-        itemPrice: this.computedPrice
+        itemPrice: this.computedPrice,
       });
     },
   },
   computed: {
     //Calculate the price based on selected shoe size
-    computedPrice: function() {
+    computedPrice() {
       if (this.selected % 36 === 0) {
         return this.shoesData.price;
       } else {
@@ -104,15 +136,75 @@ export default {
         return this.shoesData.price + num * 10;
       }
     },
+    setColor() {
+      let color;
+      switch (this.selectedPhoto.color) {
+        case "Pink":
+          color = "#c71f64";
+          break;
+        case "Blue":
+          color = "#63b2df";
+          break;
+        case "Green":
+          color = "#9ac488";
+          break;
+        case "Lightseagreen":
+          color = "#29b6a2";
+          break;
+        case "Darkblue":
+          color = "#253b7b";
+          break;
+        case "Black":
+          color = "#1a1c1c";
+          break;
+        case "Red":
+          color = "#b3091c";
+          break;
+        case "Grey":
+          color = "#4c5051";
+          break;
+        case "Purple":
+          color= "#512a5e";
+          break;
+        case "Brown":
+          color = "#ac600e";
+      }
+      return color;
+    },
   },
 };
 </script>
 
 <style scoped>
+.small-photos-container {
+  width: 100%;
+  height: 80px;
+}
+
+.small-photo {
+  overflow: hidden;
+  height: 100%;
+}
+
+.small-photo > label {
+  height: 100%;
+  cursor: pointer;
+}
+
+.small-photo > label > img {
+  height: 80%;
+  width: auto;
+  border-radius: 5px;
+}
+
+.small-photo > input {
+  display: none;
+}
+
 .size {
   width: 40px;
   height: 40px;
-  background-color: rgb(224, 224, 224);
+  color: white;
 }
 
 .size-input {
@@ -125,19 +217,11 @@ export default {
   cursor: pointer;
 }
 
-.size-input:checked + label {
-  background-color: rgb(141, 141, 141);
-}
-
 .item-number {
-  width: 15%;
   height: 35px;
   padding-left: 10px;
   cursor: pointer;
   color: white;
-  background-color: rgb(136, 136, 136);
-  border: none;
-  border-radius: 5px;
 }
 
 .checked {
