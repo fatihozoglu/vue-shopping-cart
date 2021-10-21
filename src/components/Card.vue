@@ -1,6 +1,6 @@
 <template>
   <!-- Card Starts Here -->
-  <b-card style="max-width: 23rem;">
+  <b-card class="card-component" :style="setColor">
     <!-- Card image, title and category section starts here -->
     <b-card-img
       class="mb-3"
@@ -27,7 +27,7 @@
           :for="shoesData.id + '-photo-' + index"
         >
           <img
-            :style="{ border: '2px solid ' + setColor }"
+            class="primary-border"
             :src="item.photo"
             alt="Shoe Photo"
           />
@@ -69,8 +69,7 @@
           :value="item"
         />
         <label
-          :style="{ border: '2px solid ' + setColor }"
-          class="d-flex align-items-center justify-content-center rounded"
+          class="primary-border d-flex align-items-center justify-content-center rounded"
           :for="shoesData.id + '-' + item"
           >{{ item }}</label
         >
@@ -82,8 +81,7 @@
 
     <div class="d-flex align-items-center justify-content-between gap-3">
       <select
-        :style="{ border: '2px solid ' + setColor }"
-        class="item-number rounded"
+        class="primary-border item-number rounded"
         v-model="itemNumber"
         name="item-number"
         id="item-number"
@@ -92,12 +90,10 @@
           i
         }}</option>
       </select>
-      <b-button
+      <button
         @click="onAddItem"
-        :style="{ border: '2px solid ' + setColor }"
-        class="rounded outline-none w-75"
-        variant="light"
-        >Add to Cart</b-button
+        class="add-cart primary-border rounded"
+        >Add to Cart</button
       >
     </div>
     <!-- Price, Number of selected items, Add to Card Button Section Ends Here-->
@@ -177,13 +173,21 @@ export default {
         case "Brown":
           color = "#ac600e";
       }
-      return color;
+      return { "--primary-color": color };
     },
   },
 };
 </script>
 
 <style scoped>
+
+.card-component {
+  max-width: 23rem;
+}
+
+.primary-border {
+  border: 2px solid var(--primary-color);
+}
 
 .small-photos-container {
   width: 100%;
@@ -221,7 +225,8 @@ export default {
 }
 
 .size-input:checked + label {
-  background-color: var()
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .size > label {
@@ -230,10 +235,27 @@ export default {
   cursor: pointer;
 }
 
+.size > label:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
 .item-number {
   height: 38px;
   padding-left: 10px;
   cursor: pointer;
+}
+
+.add-cart {
+  outline: none;
+  width: 75%;
+  height: 38px;
+  background-color: white;
+}
+
+.add-cart:hover {
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .checked {

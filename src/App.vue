@@ -192,14 +192,14 @@ main {
 }
 
 @media only screen and (max-width: 500px) {
-  .cart {
+  .cart-component {
     right: 0;
     width: 90%;
   }
 }
 
 @media only screen and (max-width: 430px) {
-  .cart {
+  .cart-component {
     right: 0px;
     width: 100%;
   }
