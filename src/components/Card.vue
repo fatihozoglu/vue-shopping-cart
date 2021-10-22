@@ -244,6 +244,7 @@ export default {
   height: 38px;
   padding-left: 10px;
   cursor: pointer;
+  outline: none;
 }
 
 .add-cart {

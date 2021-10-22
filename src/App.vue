@@ -12,9 +12,8 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ms-3">
           <b-nav-item href="#" active>Products</b-nav-item>
-          <b-nav-item href="#">Prices</b-nav-item>
-          <b-nav-item href="#">About Us</b-nav-item>
-          <b-nav-item href="#">Contact</b-nav-item>
+          <b-nav-item href="#" disabled>About Us</b-nav-item>
+          <b-nav-item href="#" disabled>Contact</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
 
@@ -47,6 +46,8 @@
 
     <Cart
       @deleteItem="deleteItem"
+      @increase="increase"
+      @decrease="decrease"
       class="cart-component"
       v-show="isCartOpen"
       :data="cartData"
@@ -79,10 +80,14 @@ export default {
       willAlertFire: false,
     };
   },
-
+  components: {
+    Card,
+    Cart,
+    Alert,
+  },
   methods: {
     // Prevent if there is no item in Cart and let it show if there are items
-    cartToggle: function() {
+    cartToggle() {
       if (this.cartData.length === 0) {
         this.isCartOpen = false;
       } else {
@@ -90,7 +95,7 @@ export default {
       }
     },
     // Checking the id, size and color of the items in Cart and if item doesnt exist it is added, if exists it's number increase
-    addItemToCart: function(value) {
+    addItemToCart(value) {
       this.addedItemNumber = value.number;
       if (
         this.cartData.some(
@@ -108,11 +113,30 @@ export default {
       setTimeout(() => (this.willAlertFire = false), 2000);
     },
     // Deletes the item 
-    deleteItem: function(value) {
-      let ind = this.cartData.findIndex(
-        (item) => item.id === value.id && item.size === value.size && item.color === value.color
+    deleteItem(val) {
+      let index = this.cartData.findIndex(
+        (item) => item.id === val.id && item.size === val.size && item.color === val.color
       );
-      this.cartData.splice(ind, 1);
+      this.cartData.splice(index, 1);
+      if (this.cartData.length === 0) {
+        this.isCartOpen = false;
+      }
+    },
+    increase(val) {
+      let index = this.cartData.findIndex(
+        (item) => item.id === val.id && item.size === val.size && item.color === val.color
+      );
+      this.cartData[index].number++;
+    },
+    decrease(val) {
+      let index = this.cartData.findIndex(
+        (item) => item.id === val.id && item.size === val.size && item.color === val.color
+      );
+      if(this.cartData[index].number !== 1) {
+        this.cartData[index].number--;
+      } else {
+        this.cartData.splice(index, 1);
+      }
       if (this.cartData.length === 0) {
         this.isCartOpen = false;
       }
@@ -120,26 +144,16 @@ export default {
   },
   computed: {
     // Computes the price based on the shoe size
-    showTotalItemNumber: function() {
+    showTotalItemNumber() {
       return this.cartData.reduce((acc, curr) => {
         return acc + curr.number;
       }, 0);
     },
   },
-
-  components: {
-    Card,
-    Cart,
-    Alert,
-  },
 };
 </script>
 
 <style>
-
-#app {
-  min-height: 100vh;
-}
 
 .nav {
   background-color: rgb(60, 49, 78);
@@ -163,7 +177,7 @@ export default {
 
 main {
   padding: 120px 50px;
-  background-color: rgb(221, 221, 221);
+  background-color: rgb(209, 209, 209);
 }
 
 .cart-component {
@@ -171,11 +185,6 @@ main {
   top: 10vh;
   right: 50px;
   width: 400px;
-  max-height: 89vh;
-  padding: 10px;
-  overflow: scroll;
-  background-color: grey;
-  color: white;
 }
 
 .alert-component {
@@ -201,7 +210,7 @@ main {
 @media only screen and (max-width: 430px) {
   .cart-component {
     right: 0px;
-    width: 100%;
+    width: 100vw;
   }
 }
 </style>

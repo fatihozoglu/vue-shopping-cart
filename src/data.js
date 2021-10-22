@@ -36,8 +36,7 @@ export default [
     ],
     category: "Men Sports Shoe",
     title: "Nike Air Zoom Rival Fly 3",
-    summary:
-      "Take your first steps into speed with the Nike Air Zoom Rival Fly 3.",
+    summary: "Take your first steps into speed with the Nike Air Zoom Rival Fly 3.",
     sizes: [36, 37, 38, 39, 40, 41, 42],
     price: 100,
     rating: 2,

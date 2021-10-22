@@ -15,14 +15,16 @@ export default {
 </script>
 
 <style scoped>
+
 .alert-component {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 200px;
   height: 50px;
-  background-color: rgb(105, 105, 105);
+  background-color: #3c314e;
   color: white;
   border-radius: 5px;
 }
+
 </style>
