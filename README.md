@@ -2,6 +2,8 @@
 
 This is a solution to Reengen Full Stack Bootcamp with Vuejs and Nodejs Week-1 Project. It is built with Vuejs by using [Vue CLI](https://cli.vuejs.org/).
 
+You can check the [live demo here](http://fozoglu-vue-shopping-cart.surge.sh/)
+
 ## Table of contents
 
 - [Overview](#overview)
@@ -34,7 +36,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://github.com/fatihozoglu/vue-shopping-cart)
+- Solution URL: [Github Link](https://github.com/fatihozoglu/vue-shopping-cart)
 - Live Site URL: [Vue Shopping Cart App](http://fozoglu-vue-shopping-cart.surge.sh/)
 
 ## My process
@@ -42,8 +44,8 @@ Users should be able to:
 ### Built with
 
 - Semantic HTML5 markup
-- CSS custom properties
-- Flexbox
+- CSS Custom Properties
+- CSS Flexbox
 - CSS Grid
 - Mobile-first workflow
 - [BootstrapVue](https://bootstrap-vue.org/)
@@ -54,26 +56,30 @@ Users should be able to:
 - Website - [Fatih Özoğlu](https://fatihozoglu.github.io/react-portfolio/)
 - Linkedin - [Fatih Özoğlu](https://www.linkedin.com/in/fatihozoglu/)
 
-
 ## Project setup
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```
 
 ### Lints and fixes files
+
 ```
 npm run lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
