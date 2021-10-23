@@ -186,7 +186,7 @@ export default {
 }
 
 .primary-border {
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .small-photos-container {

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <!-- Navbar Starts Here -->
     <b-navbar
       class="nav fixed-top px-5 d-flex justify-content-between"
@@ -18,15 +17,28 @@
       </b-collapse>
 
       <b-navbar-nav
-        @click="cartToggle"
-        class="cart-icon d-flex flex-row align-items-center justify-content-center ml-auto h2"
+        @mouseenter="isCartOpen = true"
+        @mouseleave="isCartOpen = false"
       >
-        <b-icon variant="light" icon="cart4"> </b-icon>
         <div
-          class="d-flex align-items-center align-self-start justify-content-center"
+          class="cart-icon d-flex flex-row
+          align-items-center justify-content-center ml-auto h2"
         >
-          {{ cartData.length === 0 ? "0" : showTotalItemNumber }}
+          <b-icon variant="light" icon="cart4"> </b-icon>
+          <div
+            class="d-flex align-items-center align-self-start justify-content-center"
+          >
+            {{ cartData.length === 0 ? "0" : showTotalItemNumber }}
+          </div>
         </div>
+        <Cart
+          @deleteItem="deleteItem"
+          @increase="increase"
+          @decrease="decrease"
+          class="cart-component"
+          v-show="isCartOpen"
+          :data="cartData"
+        />
       </b-navbar-nav>
     </b-navbar>
     <!-- Navbar Ends Here -->
@@ -43,15 +55,6 @@
       </b-row>
     </main>
     <!-- Main Ends Here -->
-
-    <Cart
-      @deleteItem="deleteItem"
-      @increase="increase"
-      @decrease="decrease"
-      class="cart-component"
-      v-show="isCartOpen"
-      :data="cartData"
-    />
 
     <transition name="fade">
       <Alert
@@ -86,24 +89,22 @@ export default {
     Alert,
   },
   methods: {
-    // Prevent if there is no item in Cart and let it show if there are items
-    cartToggle() {
-      if (this.cartData.length === 0) {
-        this.isCartOpen = false;
-      } else {
-        this.isCartOpen = !this.isCartOpen;
-      }
-    },
     // Checking the id, size and color of the items in Cart and if item doesnt exist it is added, if exists it's number increase
     addItemToCart(value) {
       this.addedItemNumber = value.number;
       if (
         this.cartData.some(
-          (item) => item.id === value.id && item.size === value.size && item.color === value.color
+          (item) =>
+            item.id === value.id &&
+            item.size === value.size &&
+            item.color === value.color
         )
       ) {
         let sameItem = this.cartData.filter(
-          (item) => item.id === value.id && item.size === value.size && item.color === value.color
+          (item) =>
+            item.id === value.id &&
+            item.size === value.size &&
+            item.color === value.color
         )[0];
         sameItem.number += value.number;
       } else {
@@ -112,10 +113,13 @@ export default {
       this.willAlertFire = true;
       setTimeout(() => (this.willAlertFire = false), 2000);
     },
-    // Deletes the item 
+    // Deletes the item
     deleteItem(val) {
       let index = this.cartData.findIndex(
-        (item) => item.id === val.id && item.size === val.size && item.color === val.color
+        (item) =>
+          item.id === val.id &&
+          item.size === val.size &&
+          item.color === val.color
       );
       this.cartData.splice(index, 1);
       if (this.cartData.length === 0) {
@@ -124,15 +128,21 @@ export default {
     },
     increase(val) {
       let index = this.cartData.findIndex(
-        (item) => item.id === val.id && item.size === val.size && item.color === val.color
+        (item) =>
+          item.id === val.id &&
+          item.size === val.size &&
+          item.color === val.color
       );
       this.cartData[index].number++;
     },
     decrease(val) {
       let index = this.cartData.findIndex(
-        (item) => item.id === val.id && item.size === val.size && item.color === val.color
+        (item) =>
+          item.id === val.id &&
+          item.size === val.size &&
+          item.color === val.color
       );
-      if(this.cartData[index].number !== 1) {
+      if (this.cartData[index].number !== 1) {
         this.cartData[index].number--;
       } else {
         this.cartData.splice(index, 1);
@@ -154,7 +164,6 @@ export default {
 </script>
 
 <style>
-
 .nav {
   background-color: rgb(60, 49, 78);
   min-height: 10vh;
@@ -183,7 +192,7 @@ main {
 .cart-component {
   position: fixed;
   top: 10vh;
-  right: 50px;
+  right: 10px;
   width: 400px;
 }
 
@@ -193,10 +202,12 @@ main {
   right: 20px;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 
